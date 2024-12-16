@@ -141,7 +141,7 @@ const TranslateJsonPage = () => {
           className="bg-indigo-600 text-white py-3 px-6 rounded-lg w-full font-semibold hover:bg-indigo-700 transition duration-300 focus:outline-none focus:ring focus:ring-indigo-500"
           disabled={isLoading}
         >
-          {isLoading ? 'Processing...' : 'Translate Now'}
+          {isLoading ? 'Processing...' : 'Translate '}
         </button>
       </form>
     </div>
