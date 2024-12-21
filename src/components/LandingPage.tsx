@@ -2,12 +2,9 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
-  // Create a reference to the Services section
   const servicesRef = useRef<HTMLElement | null>(null);
-
   const navigate = useNavigate();
 
-  // Function to scroll to the services section
   const scrollToServices = () => {
     if (servicesRef.current) {
       servicesRef.current.scrollIntoView({ behavior: "smooth" });
@@ -18,137 +15,94 @@ const LandingPage = () => {
     navigate("/translate-json");
   };
 
+  const navigateToTranslatePage = () => {
+    navigate("/translate-document");
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 via-teal-500 to-indigo-600 text-white">
-      {/* Header Section */}
-      <header className="flex flex-col justify-center items-center min-h-screen text-center py-12">
-        <h1 className="text-6xl font-extrabold tracking-tight text-white leading-tight">
-          Welcome to <span className="text-teal-300">Localis</span>
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      {/* Hero Section */}
+      <header className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-tl from-teal-500 via-purple-600 to-blue-800 text-center px-6">
+        <h1 className="text-6xl md:text-8xl font-bold text-white">
+          Discover <span className="text-yellow-400">Localis</span>
         </h1>
-        <p className="mt-4 text-xl text-gray-200 max-w-3xl mx-auto">
-          Localis is your trusted partner for quick and seamless translation
-          services. Translate JSON files or documents in a matter of clicks.
+        <p className="mt-6 text-xl md:text-2xl max-w-xl">
+          Seamless translation services tailored for your needs. Translate JSON files or documents quickly and efficiently.
         </p>
         <button
           onClick={scrollToServices}
-          className="mt-8 bg-teal-600 text-white py-3 px-8 rounded-full hover:bg-teal-700 transition duration-300"
+          className="mt-10 bg-yellow-400 text-gray-900 py-3 px-8 rounded-lg shadow-lg hover:bg-yellow-500 transition-transform transform hover:scale-105"
         >
-          Get Started
+          Learn More
         </button>
+        <div className="absolute bottom-12 animate-pulse">
+          <span className="text-white text-2xl">▼</span>
+        </div>
       </header>
 
-      {/* Main Content Section */}
+      {/* Services Section */}
       <main>
-        {/* Services Grid Section */}
-        <section ref={servicesRef} className="px-6 sm:px-12 lg:px-24 py-16">
+        <section
+          ref={servicesRef}
+          className="py-20 px-6 sm:px-12 lg:px-32 bg-gray-800 text-gray-100"
+        >
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-semibold text-gray-800">
-              Our Services
-            </h2>
-            <p className="text-lg text-gray-600 mt-4 max-w-2xl mx-auto">
-              Whether you're localizing JSON files for your website or
-              translating documents and PDFs for a global audience, Localis
-              provides a reliable and fast solution to meet your translation
-              needs.
+            <h2 className="text-5xl font-extrabold">Our Services</h2>
+            <p className="mt-4 text-lg text-gray-400 max-w-2xl mx-auto">
+              Empower your business with high-quality translations. Choose from our range of tailored services.
             </p>
           </div>
 
-          {/* Services Grid Section */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12">
-            {/* Service 1: Translate JSON Files */}
-            <div className="bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden p-8 transform transition duration-500 hover:scale-105">
-              <h3 className="text-3xl font-semibold mb-4">
-                Translate JSON Files
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Localize your JSON files seamlessly for web and mobile
-                applications. Our tool ensures smooth translations that keep the
-                integrity of your data intact.
-              </p>
-              <ul className="text-left text-gray-600 mb-6 space-y-2">
-                <li>Effortless and fast JSON file conversion.</li>
-                <li>Supports multiple languages.</li>
-                <li>Easy integration with your projects.</li>
-              </ul>
-              <button
-                className="bg-teal-600 text-white py-3 px-8 rounded-full hover:bg-teal-700 transition duration-300"
-                onClick={navigateToTranslateJson}
-              >
-                Translate JSON Now
-              </button>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* Service 1 */}
+            <div className="bg-gray-700 rounded-lg shadow-md overflow-hidden transform transition-transform hover:scale-105">
+              <div className="p-8">
+                <h3 className="text-3xl font-bold mb-4">Translate JSON Files</h3>
+                <p className="text-gray-300 mb-6">
+                  Localize your web or mobile applications with ease. Ensure your JSON files are translated accurately.
+                </p>
+                <ul className="list-disc list-inside text-gray-400 space-y-2">
+                  <li>Efficient and fast JSON localization</li>
+                  <li>Supports multiple languages</li>
+                  <li>Simple integration</li>
+                </ul>
+                <button
+                  onClick={navigateToTranslateJson}
+                  className="mt-6 bg-teal-500 text-white py-3 px-6 rounded-lg hover:bg-teal-600 transition-all"
+                >
+                  Translate JSONs
 
-            {/* Service 2: Translate Docs and PDFs */}
-            <div className="bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden p-8 transform transition duration-500 hover:scale-105">
-              <h3 className="text-3xl font-semibold mb-4">
-                Translate Docs & PDFs
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Need to translate business documents or PDFs? With Localis, get
-                your documents translated into multiple languages accurately and
-                professionally.
-              </p>
-              <ul className="text-left text-gray-600 mb-6 space-y-2">
-                <li>Supports PDF, DOCX, and other formats.</li>
-                <li>Professional translation quality.</li>
-                <li>Fast turnarounds for urgent needs.</li>
-              </ul>
-              <button className="bg-indigo-600 text-white py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300">
-                Translate Documents Now
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials Section */}
-        <section className="bg-gray-100 py-16">
-          <h2 className="text-4xl text-center font-semibold text-gray-800 mb-8">
-            What Our Users Say
-          </h2>
-          <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-12 px-6">
-            {/* Testimonial 1 */}
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <p className="text-lg text-gray-600 italic">
-                "Localis made our website's localization effortless. We were
-                able to translate our JSON files quickly and without any
-                hassle."
-              </p>
-              <div className="mt-6">
-                <p className="font-semibold text-gray-800">Alice Johnson</p>
-                <p className="text-sm text-gray-500">Web Developer</p>
+                </button>
               </div>
             </div>
 
-            {/* Testimonial 2 */}
-            <div className="bg-white p-8 rounded-lg shadow-lg">
-              <p className="text-lg text-gray-600 italic">
-                "We used Localis to translate our marketing materials, and it
-                worked seamlessly. Fast, reliable, and accurate translations!"
-              </p>
-              <div className="mt-6">
-                <p className="font-semibold text-gray-800">John Doe</p>
-                <p className="text-sm text-gray-500">Marketing Director</p>
+            {/* Service 2 */}
+            <div className="bg-gray-700 rounded-lg shadow-md overflow-hidden transform transition-transform hover:scale-105">
+              <div className="p-8">
+                <h3 className="text-3xl font-bold mb-4">Translate Documents</h3>
+                <p className="text-gray-300 mb-6">
+                  Professional translations for PDFs, Word documents, and more. High accuracy and fast delivery.
+                </p>
+                <ul className="list-disc list-inside text-gray-400 space-y-2">
+                  <li>Supports multiple file formats</li>
+                  <li>Professional-grade quality</li>
+                  <li>Quick turnaround</li>
+                </ul>
+                <button
+                  onClick={navigateToTranslatePage}
+                  className="mt-6 bg-purple-500 text-white py-3 px-6 rounded-lg hover:bg-purple-600 transition-all"
+                >
+                  Translate Documents
+                </button>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="bg-teal-600 py-12 text-white text-center">
-          <h2 className="text-3xl font-semibold mb-6">Ready to Get Started?</h2>
-          <p className="text-lg mb-8">
-            Start using Localis today and experience hassle-free translation
-            services for your files. Your global audience is just a click away.
-          </p>
-          <button className="bg-indigo-600 text-white py-3 px-8 rounded-full hover:bg-indigo-700 transition duration-300">
-            Get Started Now
-          </button>
         </section>
 
         {/* Footer Section */}
-        <footer className="bg-gray-800 text-white py-8">
-          <div className="text-center">
-            <p className="text-sm">© 2024 Localis. All Rights Reserved.</p>
+        <footer className="bg-gray-900 text-gray-400 py-12">
+          <div className="max-w-6xl mx-auto text-center">
+            <p className="text-sm">&copy; {new Date().getFullYear()} Localis. All rights reserved.</p>
           </div>
         </footer>
       </main>

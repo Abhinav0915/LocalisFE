@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
-const TranslateJsonPage = () => {
-  const [jsonFile, setJsonFile] = useState<File | null>(null);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+const TranslateDocumentPage = () => {
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [, setDownloadLink] = useState<string | null>(null);
@@ -30,36 +30,32 @@ const TranslateJsonPage = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setJsonFile(e.target.files[0]);
+      setDocumentFile(e.target.files[0]);
     }
   };
 
   const handleLanguageChange = (language: string) => {
-    setSelectedLanguages((prev) =>
-      prev.includes(language)
-        ? prev.filter((lang) => lang !== language)
-        : [...prev, language]
-    );
+    setSelectedLanguage(language); // Only one language can be selected
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!jsonFile || selectedLanguages.length === 0) {
-      setError('Please upload a JSON file and select target languages.');
+    if (!documentFile || !selectedLanguage) {
+      setError('Please upload a document and select a target language.');
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', jsonFile);
-    selectedLanguages.forEach((lang) => formData.append('translate_to', lang));
+    formData.append('document', documentFile);
+    formData.append('translate_to', selectedLanguage); // Only send one language
 
     setIsLoading(true);
     setError(null);
     setDownloadLink(null);
 
     try {
-      const response = await axios.post('http://localhost:8000/translate_json_files_new/', formData, {
+      const response = await axios.post('http://localhost:8000/translate_and_download_document/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -69,12 +65,12 @@ const TranslateJsonPage = () => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'translated_sorted_files.zip');
+      link.setAttribute('download', 'translated_document.zip');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      setError('An error occurred while processing the file.');
+      setError('An error occurred while processing the document.');
       console.error('Error:', err);
     } finally {
       setIsLoading(false);
@@ -88,14 +84,14 @@ const TranslateJsonPage = () => {
         className="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-lg text-gray-800"
       >
         <h1 className="text-3xl font-bold text-center mb-6 text-indigo-700">
-          Translate JSON Files
+          Translate Document
         </h1>
 
         <div className="mb-6">
-          <label className="block text-lg font-medium mb-2 text-gray-700">Upload JSON File</label>
+          <label className="block text-lg font-medium mb-2 text-gray-700">Upload Document</label>
           <input
             type="file"
-            accept=".json"
+            accept=".doc,.docx"
             onChange={handleFileChange}
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             required
@@ -103,12 +99,12 @@ const TranslateJsonPage = () => {
         </div>
 
         <div className="mb-6 relative">
-          <label className="block text-lg font-medium mb-2 text-gray-700">Target Languages</label>
+          <label className="block text-lg font-medium mb-2 text-gray-700">Target Language</label>
           <div
             className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white cursor-pointer flex justify-between items-center"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <span>{selectedLanguages.length > 0 ? selectedLanguages.join(', ') : 'Select target languages'}</span>
+            <span>{selectedLanguage ? selectedLanguage : 'Select target language'}</span>
             <span className="text-gray-500">▼</span>
           </div>
           {isDropdownOpen && (
@@ -122,8 +118,8 @@ const TranslateJsonPage = () => {
                   className="flex items-center px-4 py-2 hover:bg-indigo-100"
                 >
                   <input
-                    type="checkbox"
-                    checked={selectedLanguages.includes(language)}
+                    type="radio"
+                    checked={selectedLanguage === language}
                     onChange={() => handleLanguageChange(language)}
                     className="mr-2"
                   />
@@ -148,4 +144,4 @@ const TranslateJsonPage = () => {
   );
 };
 
-export default TranslateJsonPage;
+export default TranslateDocumentPage;
