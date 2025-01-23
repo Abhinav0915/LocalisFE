@@ -44,32 +44,36 @@ const TranslateJsonPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!jsonFile || selectedLanguages.length === 0) {
       setError('Please upload a JSON file and select target languages.');
       return;
     }
-
+  
     const formData = new FormData();
     formData.append('file', jsonFile);
     selectedLanguages.forEach((lang) => formData.append('translate_to', lang));
-
+  
     setIsLoading(true);
     setError(null);
     setDownloadLink(null);
-
+  
     try {
-      const response = await axios.post('http://localhost:8000/translate_json_files_new/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        responseType: 'blob',
-      });
-
+      const response = await axios.post(
+        'http://localhost:8000/translate_json_files_new/',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          responseType: 'blob',
+        }
+      );
+  
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'translated_sorted_files.zip');
+      link.setAttribute('download', 'translated_files.zip');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -80,6 +84,7 @@ const TranslateJsonPage = () => {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white flex items-center justify-center px-6 py-12">
